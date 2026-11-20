@@ -1,8 +1,5 @@
-/*.mjs
-  Content-Type: application/javascript
+/*.woff2
+  Content-Type: font/woff2
 
-/*.framercms
-  Content-Type: application/octet-stream
-
-/*.lottie
-  Content-Type: application/zip
+/*.pdf
+  Content-Type: application/pdf

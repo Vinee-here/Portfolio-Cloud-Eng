@@ -1,63 +1,36 @@
-# Hosting notes (FramerExporter static export)
+# Hosting Guide — Vinee Sawant's Portfolio
 
-Your ZIP is **fully static** HTML, CSS, JS, images, and binary assets — including
-`.framercms` files that Framer already downloaded at export time. Nothing calls Framer
-or a CMS API in production.
+This portfolio is a **fully static, self-contained, lightning-fast** website with clean HTML, CSS, fonts, and assets. There are no external dependencies, database requirements, or build steps required.
 
-Framer's runtime may request those local files with `?range=…` query parameters.
-Every HTML page includes a small inline script (`framexporter-framercms-shim`) that
-handles that in the browser so **any static HTTP server** works (Netlify, Cloudflare
-Pages, Vercel, GitHub Pages, FTP, cPanel, etc.).
+## Quick Deployment Options
 
-Also included:
+### 1. Vercel
+1. Push your repository to GitHub (`https://github.com/Vinee-here/Portfolio-Cloud-Eng`).
+2. Go to [vercel.com](https://vercel.com/) and click **Add New Project**.
+3. Import your GitHub repository.
+4. Leave build command empty and output directory as `./` (root).
+5. Click **Deploy**.
 
-- `_headers` — MIME types for `.mjs`, `.framercms`, `.lottie` (Netlify and Cloudflare Pages)
-- `_redirects` — placeholder only; nested folders already serve clean URLs (`journey/index.html` → `/journey/`)
-- `vercel.json` — Vercel MIME headers
-- `.htaccess` — Apache / cPanel / Hostinger MIME types
+### 2. GitHub Pages
+1. Go to your repository settings on GitHub.
+2. Under **Pages**, select **Deploy from a branch**.
+3. Select branch `main` and folder `/ (root)`.
+4. Click **Save**. Your site will be live at `https://vinee-here.github.io/Portfolio-Cloud-Eng/`!
 
-Deploy the site at the **domain root** (`index.html` at the publish root). Subpath deploys
-(e.g. `username.github.io/repo/`) are not the optimized case for this export layout.
+### 3. Netlify
+1. Log in to [Netlify](https://www.netlify.com/).
+2. Drag and drop this folder directly into the Netlify Sites dashboard, or link your GitHub repo.
+3. Publish directory: `./` (root).
 
-## Static site vs opening files from disk
+---
 
-| How you open the export | What works |
-|-------------------------|------------|
-| **Published on HTTP/HTTPS** (Netlify, Cloudflare Pages, Vercel, `npx serve`, FramerExporter preview) | Full site: routes, Lottie, search, CMS snapshot |
-| **Double-click `index.html` (`file://`)** | Partial: homepage and assets often load; **Lottie and ES modules usually fail**; internal links need the file-protocol shim (included) |
+## Local Development & Testing
 
-“Static site” in production means **files served over HTTP**, not PHP or a database — not
-“opened directly from Finder/Explorer.” Browsers restrict `file://` for security (especially
-`type="module"` scripts such as Framer bundles and `dotlottie-player`).
-
-### Test locally before deploy
-
-From the unzipped folder:
+To preview the website locally on your computer:
 
 ```bash
-npx serve .
-# or: python3 -m http.server 8080
+# Python 3
+python -m http.server 8000
 ```
 
-Then open `http://localhost:3000` (or `:8080`). Routes like `/journey/` or `/projects/mar`
-match `journey/index.html` / `projects/mar/index.html` on disk. Opening a subpage directly
-(and hard-refreshing) should keep the URL and load images from `/images/…`.
-
-### Cloudflare Pages
-
-1. Unzip the export (or push the unzipped folder to Git).
-2. In Cloudflare Pages: create a project → upload assets **or** connect Git.
-3. Build command: leave empty. Output / publish directory: folder that contains `index.html`.
-4. Deploy. `_headers` is picked up automatically for MIME types.
-
-### If you must use `file://`
-
-- Prefer opening each page file directly, e.g. `projects/mar/index.html`, for that screen only.
-- A small script (`framexporter-file-protocol-shim`) helps **in-app links** map routes to
-  the correct relative HTML when you start from `index.html`.
-- **Lottie (`.lottie`)** still requires HTTP — the player is an ES module the browser
-  blocks on `file://`. Use Netlify / Cloudflare Pages / preview / `npx serve` to verify animations.
-
-## Production
-
-Serve over **HTTPS** (or HTTP on localhost), not `file://`.
+Then open `http://localhost:8000` in your browser.

@@ -1,12 +1,12 @@
 {
   "headers": [
     {
-      "source": "/(.*)\\.mjs",
-      "headers": [{ "key": "Content-Type", "value": "application/javascript" }]
+      "source": "/(.*)\\.woff2",
+      "headers": [{ "key": "Content-Type", "value": "font/woff2" }]
     },
     {
-      "source": "/(.*)\\.framercms",
-      "headers": [{ "key": "Content-Type", "value": "application/octet-stream" }]
+      "source": "/(.*)\\.pdf",
+      "headers": [{ "key": "Content-Type", "value": "application/pdf" }]
     }
   ]
 }
